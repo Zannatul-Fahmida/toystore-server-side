@@ -19,6 +19,7 @@ async function run() {
     const database = client.db('toy_store');
     const toysCollection = database.collection('toys');
     const ordersCollection = database.collection('orders');
+    const reviewsCollection = database.collection('reviews');
 
     // GET API
     app.get('/toys', async (req, res) => {
@@ -86,6 +87,20 @@ async function run() {
       const result = await ordersCollection.updateOne(filter, updateDoc, options);
       res.json(result);
     })
+
+    // GET Reviews API
+    app.get('/reviews', async (req, res) => {
+      const cursor = reviewsCollection.find({});
+      const reviews = await cursor.toArray();
+      res.json(reviews);
+    });
+    
+    //add reviews in database
+    app.post("/addReviews", (req, res) => {
+      reviewsCollection.insertOne(req.body).then((result) => {
+        res.json(result);
+      });
+    });
 
     // DELETE orders
     app.delete('/order/:id', async (req, res) => {
