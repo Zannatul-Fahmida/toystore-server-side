@@ -20,6 +20,7 @@ async function run() {
     const toysCollection = database.collection('toys');
     const ordersCollection = database.collection('orders');
     const reviewsCollection = database.collection('reviews');
+    const usersCollection = database.collection('users');
 
     // GET API
     app.get('/toys', async (req, res) => {
@@ -101,6 +102,53 @@ async function run() {
         res.json(result);
       });
     });
+
+    //get users by email
+    app.get('/users/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      let isAdmin = false;
+      if (user.role === 'admin') {
+        isAdmin = true;
+      }
+      res.json({ admin: isAdmin });
+    })
+
+    //add users in database
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.json(result);
+    })
+
+    //update users
+    app.put('/users', async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const options = { upsert: true };
+      const updateDoc = { $set: user };
+      const result = await usersCollection.updateOne(filter, updateDoc, options);
+      res.json(result);
+    })
+
+    //update users to admin
+    app.put('/users/admin', verifyToken, async (req, res) => {
+      const user = req.body;
+      const requester = req.decodedEmail;
+      if(requester){
+        const requesterAccount = await usersCollection.findOne({email: requester});
+        if(requesterAccount.role === 'admin'){
+          const filter = { email: user.email };
+          const updateDoc = { $set: { role: 'admin' } };
+          const result = await usersCollection.updateOne(filter, updateDoc);
+          res.json(result);
+        }
+      }
+      else{
+        res.status(403).json({message: 'You do not have access to make admin'});
+      }
+    })
 
     // DELETE orders
     app.delete('/order/:id', async (req, res) => {
