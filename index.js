@@ -13,20 +13,6 @@ app.use(express.json())
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.9pclo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function verifyToken(req, res, next) {
-  if(req.headers?.authorization?.startsWith('Bearer ')){
-    const token = req.headers.authorization.split(' ')[1];
-    try{
-      const decodedUser = await admin.auth().verifyIdToken(token);
-      req.decodedEmail = decodedUser.email;
-    }
-    catch{
-
-    }
-  }
-  next();
-}
-
 async function run() {
   try {
     await client.connect();
@@ -115,6 +101,13 @@ async function run() {
       reviewsCollection.insertOne(req.body).then((result) => {
         res.json(result);
       });
+    });
+
+    // GET Users API
+    app.get('/users', async (req, res) => {
+      const cursor = usersCollection.find({});
+      const users = await cursor.toArray();
+      res.json(users);
     });
 
     //get users by email
