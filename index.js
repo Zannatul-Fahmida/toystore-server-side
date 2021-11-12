@@ -133,7 +133,7 @@ async function run() {
     })
 
     //update users to admin
-    app.put('/users/admin', verifyToken, async (req, res) => {
+    app.put('/users/admin', async (req, res) => {
       const user = req.body;
       const requester = req.decodedEmail;
       if(requester){
