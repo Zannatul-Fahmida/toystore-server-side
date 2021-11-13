@@ -73,29 +73,14 @@ async function run() {
       res.json(ordered);
     })
 
-    // //Update Status
-    // app.put('/order/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   const updatedOrders = req.body;
-    //   const filter = { _id: ObjectId(id) };
-    //   const options = { upsert: true };
-    //   const updateDoc = {
-    //     $set: {
-    //       status: updatedOrders.status
-    //     },
-    //   };
-    //   const result = await ordersCollection.updateOne(filter, updateDoc, options);
-    //   res.json(result);
-    // })
-
-    //Update Status to shipping
+    //Update Status to shipped
     app.put('/order/:id', async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          status: 'Shipping'
+          status: 'Shipped'
         },
       };
       const result = await ordersCollection.updateOne(filter, updateDoc, options);
