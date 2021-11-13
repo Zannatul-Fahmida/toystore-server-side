@@ -91,7 +91,8 @@ async function run() {
     //Update Status to shipping
     app.put('/order/:id', async (req, res) => {
       const id = req.params.id;
-      const filter = { _id: ObjectId(id) };
+      const user = req.body;
+      const filter = { _id: ObjectId(id), email: user.email };
       const options = { upsert: true };
       const updateDoc = {
         $set: {
