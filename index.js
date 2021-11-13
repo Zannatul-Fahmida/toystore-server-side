@@ -88,6 +88,20 @@ async function run() {
       res.json(result);
     })
 
+    //Update Status to shipping
+    app.put('/order/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: 'Shipping'
+        },
+      };
+      const result = await ordersCollection.updateOne(filter, updateDoc, options);
+      res.json(result);
+    })
+
     // GET Reviews API
     app.get('/reviews', async (req, res) => {
       const cursor = reviewsCollection.find({});
