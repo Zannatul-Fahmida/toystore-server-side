@@ -34,7 +34,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const toy = await toysCollection.findOne(query);
-      console.log(toy);
       res.json(toy);
     })
 
@@ -153,6 +152,14 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await ordersCollection.deleteOne(query);
+      res.json(result);
+    });
+
+    // DELETE toys
+    app.delete('/toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await toysCollection.deleteOne(query);
       res.json(result);
     });
 
