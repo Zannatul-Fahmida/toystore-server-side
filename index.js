@@ -22,7 +22,7 @@ async function run() {
     const reviewsCollection = database.collection('reviews');
     const usersCollection = database.collection('users');
 
-    // GET API
+    // GET toys API
     app.get('/toys', async (req, res) => {
       const cursor = toysCollection.find({});
       const toys = await cursor.toArray();
