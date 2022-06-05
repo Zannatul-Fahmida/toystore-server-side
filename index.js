@@ -154,6 +154,14 @@ async function run() {
       res.json(result);
     });
 
+    // DELETE reviews
+    app.delete('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviewsCollection.deleteOne(query);
+      res.json(result);
+    });
+
     // DELETE toys
     app.delete('/toys/:id', async (req, res) => {
       const id = req.params.id;
