@@ -87,19 +87,19 @@ async function run() {
       res.json(result);
     })
 
-    // // GET Reviews API
-    // app.get('/reviews', async (req, res) => {
-    //   const cursor = reviewsCollection.find({});
-    //   const reviews = await cursor.toArray();
-    //   res.json(reviews);
-    // });
+    // GET Reviews API
+    app.get('/reviews', async (req, res) => {
+      const cursor = reviewsCollection.find({});
+      const reviews = await cursor.toArray();
+      res.json(reviews);
+    });
 
-    // //add reviews in database
-    // app.post("/addReviews", (req, res) => {
-    //   reviewsCollection.insertOne(req.body).then((result) => {
-    //     res.json(result);
-    //   });
-    // });
+    //add reviews in database
+    app.post("/addReviews", (req, res) => {
+      reviewsCollection.insertOne(req.body).then((result) => {
+        res.json(result);
+      });
+    });
 
     // GET Users API
     app.get('/users', async (req, res) => {
@@ -154,13 +154,13 @@ async function run() {
       res.json(result);
     });
 
-    // // DELETE reviews
-    // app.delete('/reviews/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: ObjectId(id) };
-    //   const result = await reviewsCollection.deleteOne(query);
-    //   res.json(result);
-    // });
+    // DELETE reviews
+    app.delete('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviewsCollection.deleteOne(query);
+      res.json(result);
+    });
 
     // DELETE toys
     app.delete('/toys/:id', async (req, res) => {
