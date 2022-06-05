@@ -94,6 +94,14 @@ async function run() {
       res.json(reviews);
     });
 
+    // GET Single reviews
+    app.get('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const review = await reviewsCollection.findOne(query);
+      res.json(review);
+    })
+
     //add reviews in database
     app.post("/addReviews", (req, res) => {
       reviewsCollection.insertOne(req.body).then((result) => {
